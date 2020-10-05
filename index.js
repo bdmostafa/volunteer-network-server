@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
-const ObjectID = require('mongodb').ObjectID;
+// const ObjectID = require('mongodb').ObjectID;
 const uploadFile = require('express-fileupload');
 
 app.use(cors());
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(uploadFile());
 app.use(express.static('uploads'))
 
-const port = process.env.PORT || 4000;
+const port = 4000;
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.efifc.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
@@ -45,7 +45,6 @@ client.connect(err => {
 
     // Get all events through GET method
     app.get('/events', (req, res) => {
-        // const allEvents = req.body;
         eventsCollection.find({})
             .toArray((err, documents) => {
                 res.send(documents);
@@ -64,7 +63,6 @@ client.connect(err => {
 
     // Get a specific users events through email
     app.get('/view-my-events', (req, res) => {
-        // console.log(req.headers.email)
         registeredEventsCollection.find({ email: req.headers.email })
             .toArray((error, documents) => {
                 res.send(documents)
@@ -81,7 +79,6 @@ client.connect(err => {
 
     // Delete an event API
     app.delete('/delete-event/',(req,res)=>{
-        // console.log(req.params.id)
         registeredEventsCollection.deleteOne({_id: req.headers.id})
         .then(result=>{
           console.log(result)
